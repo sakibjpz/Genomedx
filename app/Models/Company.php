@@ -10,7 +10,8 @@ class Company extends Model
         'name',
         'slug', 
         'is_active',
-        'sort_order'
+        'sort_order',
+        'image'
     ];
 
     protected $casts = [

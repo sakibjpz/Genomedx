@@ -169,6 +169,7 @@
     <i class="fas fa-building"></i> Companies
 </a>
 
+
         {{-- Social Links --}}
         <a href="{{ route('admin.social-links.index') }}" class="menu-item {{ request()->is('admin/social-links*') ? 'active' : '' }}">
             <i class="fas fa-share-alt"></i> Social Links
@@ -202,6 +203,24 @@
                 All Products by Group
             </a>
         </div>
+
+        {{-- Settings --}}
+<li class="mb-2">
+    <a href="{{ route('admin.settings.index') }}" 
+       class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded {{ request()->routeIs('admin.settings.*') ? 'bg-gray-200' : '' }}">
+        <i class="fas fa-cog mr-3"></i>
+        Frontend Settings
+    </a>
+</li>
+
+{{-- News --}}
+<li class="mb-2">
+    <a href="{{ route('admin.news.index') }}" 
+       class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded {{ request()->routeIs('admin.news.*') ? 'bg-gray-200' : '' }}">
+        <i class="fas fa-newspaper mr-3"></i>
+        News Management
+    </a>
+</li>
 
     </nav>
 </aside>

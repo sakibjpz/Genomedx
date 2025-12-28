@@ -13,7 +13,7 @@
     <div class="bg-white rounded-lg shadow p-6">
         <h1 class="text-2xl font-bold text-gray-900 mb-6">Edit Company</h1>
 
-        <form action="{{ route('admin.companies.update', $company->id) }}" method="POST">
+        <form action="{{ route('admin.companies.update', $company->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -43,6 +43,32 @@
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
+
+            <!-- Company Image -->
+<div class="mb-6">
+    <label for="image" class="block text-gray-700 font-medium mb-2">
+        Company Image
+    </label>
+    
+    <!-- Current Image Preview -->
+    @if($company->image)
+        <div class="mb-4">
+            <img src="{{ asset('storage/' . $company->image) }}" 
+                 alt="{{ $company->name }}" 
+                 class="w-32 h-32 object-cover rounded-lg border">
+            <p class="text-sm text-gray-500 mt-1">Current image</p>
+        </div>
+    @endif
+    
+    <input type="file" id="image" name="image" 
+           class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <p class="text-sm text-gray-500 mt-1">
+        Upload company logo or image (JPG, PNG, GIF, max 2MB)
+    </p>
+    @error('image')
+        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
 
             <!-- Sort Order -->
             <div class="mb-6">

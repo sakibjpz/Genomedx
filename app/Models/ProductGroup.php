@@ -6,21 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductGroup extends Model
 {
-    protected $fillable = [
-        'name',
-        'slug',
-        'color',
-        'icon',
-        'position',
-        'status',
-    ];
+   protected $fillable = [
+    'name',
+    'slug',
+    'company_id', // ADD THIS LINE
+    'color',
+    'icon',
+    'position',
+    'status',
+];
 
     // A group has many products
-    public function products()
-    {
-        return $this->hasMany(Product::class)
-                    ->orderBy('position');
-    }
+   public function products()
+{
+    return $this->hasMany(Product::class)
+                ->orderBy('position');
+}
+
+// ADD THIS METHOD:
+public function productsCount()
+{
+    return $this->products()->count();
+}
 
     public function company()
 {

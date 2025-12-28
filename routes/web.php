@@ -7,8 +7,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\FlagController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CompanyController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\QueryTypeController;
 use App\Http\Controllers\Admin\SocialLinkController;
@@ -27,9 +29,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -46,16 +48,43 @@ Route::get('/companies/{company:slug}', [App\Http\Controllers\CompanyController:
 
 Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
 
+// Search suggestions (AJAX)
+Route::get('/products/search/suggestions', [ProductController::class, 'searchSuggestions'])
+    ->name('products.search.suggestions');
+
 // About Us Page
 Route::get('/about-us', function () {
     return view('front.about');
 })->name('about');
 // Show all products in a group
-Route::get('/product-groups/{group}', [ProductController::class, 'index'])
+Route::get('/product-groups/{group:slug}', [ProductController::class, 'index'])
     ->name('products.index');
 
+
+Route::get('/partners', function() {
+    $companies = \App\Models\Company::active()
+        ->with('activeProductGroups')
+        ->ordered()
+        ->get();
+    
+    return view('front.partners.index', compact('companies'));
+})->name('partners.index');
+
+
+
+   // News frontend routes
+Route::get('/news', function() {
+    $allNews = \App\Models\News::published()
+        ->orderBy('published_date', 'desc')
+        ->paginate(9);
+    
+    return view('front.news.index', compact('allNews'));
+})->name('news.index');
+
+Route::get('/news/{news:slug}', [App\Http\Controllers\NewsController::class, 'show'])->name('news.show');
+
 // Show single product details
-Route::get('/products/{product}', [ProductController::class, 'show'])
+Route::get('/products/{product:slug}', [ProductController::class, 'show'])
     ->name('products.show');
 
 Route::get('/contact', [ContactController::class, 'create'])->name('contact');
@@ -84,6 +113,15 @@ Route::prefix('products/{product}/features')->name('products.features.')->group(
 // Companies Management
 Route::resource('companies', CompanyController::class);
 Route::post('companies/reorder', [CompanyController::class, 'reorder'])->name('companies.reorder');
+
+// Settings Routes
+Route::prefix('settings')->name('settings.')->group(function () {
+    Route::get('/', [SettingController::class, 'index'])->name('index');
+    Route::put('/', [SettingController::class, 'update'])->name('update');
+});
+
+// News Routes
+Route::resource('news', NewsController::class)->except(['show']);
 
 
 // In your admin routes group

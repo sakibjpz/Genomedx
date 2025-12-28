@@ -13,7 +13,7 @@
     <div class="bg-white rounded-lg shadow p-6">
         <h1 class="text-2xl font-bold text-gray-900 mb-6">Create New Company</h1>
 
-        <form action="{{ route('admin.companies.store') }}" method="POST">
+        <form action="{{ route('admin.companies.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <!-- Name -->
@@ -41,6 +41,21 @@
                     Used in URLs (lowercase, hyphens, no spaces).
                 </p>
                 @error('slug')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Company Image -->
+            <div class="mb-6">
+                <label for="image" class="block text-gray-700 font-medium mb-2">
+                    Company Image
+                </label>
+                <input type="file" id="image" name="image" 
+                       class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <p class="text-sm text-gray-500 mt-1">
+                    Upload company logo or image (JPG, PNG, GIF, max 2MB)
+                </p>
+                @error('image')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
@@ -82,7 +97,6 @@
         </form>
     </div>
 </div>
-
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

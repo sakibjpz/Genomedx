@@ -1,0 +1,345 @@
+/* ==========================================================================
+   1. GLOBAL & BASE STYLES
+   ========================================================================== */
+[x-cloak] { display: none !important; }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Standard Utilities */
+.border-3 { border-width: 3px; }
+
+/* ==========================================================================
+   2. HEADER & NAVIGATION - FIXED
+   ========================================================================== */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Dynamic header height calculation */
+.header-spacer {
+    margin-top: 70px; /* Default for mobile */
+}
+
+/* Adjust for desktop when nav bar is visible */
+@media (min-width: 1024px) {
+    .header-spacer {
+        margin-top: 120px; /* Logo row + nav row */
+    }
+}
+
+/* For very large screens */
+@media (min-width: 1536px) {
+    .header-spacer {
+        margin-top: 120px;
+    }
+}
+
+/* Ensure banner is not hidden behind header */
+.gp-hero {
+    position: relative;
+    z-index: 1;
+    margin-top: 0 !important;
+}
+
+.gp-logo img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    transition: max-width 0.3s ease;
+}
+
+.header-small-text {
+    font-size: 14px;
+}
+
+/* Responsive logo sizing */
+@media (max-width: 768px) {
+    .gp-logo img { 
+        max-width: 140px; 
+    }
+    .header-small-text { 
+        font-size: 12px; 
+    }
+}
+
+@media (max-width: 640px) {
+    .gp-logo img { 
+        max-width: 120px; 
+    }
+}
+
+/* Mobile Menu Styles */
+@media (max-width: 1023px) {
+    /* Prevent body scroll when mobile menu is open */
+    body.mobile-menu-open {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+    }
+}
+
+/* Mega Menu Internal Scroll Fix */
+.mega-menu-scroll {
+    max-height: calc(100vh - 200px);
+    overscroll-behavior: contain;
+    overflow-y: auto;
+}
+
+/* ==========================================================================
+   3. MAIN CONTENT & HERO BANNER - FIXED
+   ========================================================================== */
+
+.gp-hero {
+    min-height: 550px;
+    height: auto;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 0;
+}
+
+/* Add top padding to hero to account for fixed header */
+.gp-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px; /* Adjust based on header height */
+    z-index: 2;
+}
+
+/* Responsive Hero Height */
+@media (max-width: 768px) {
+    .gp-hero {
+        min-height: 400px;
+        padding-top: 60px; /* Extra space for fixed header */
+    }
+}
+
+@media (max-width: 640px) {
+    .gp-hero {
+        min-height: 350px;
+        padding-top: 50px;
+    }
+}
+
+.gp-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.40);
+    z-index: 1;
+}
+
+.gp-hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1s ease-in-out;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.gp-hero-content.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.gp-hero h1 {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+/* Responsive Hero Typography */
+@media (max-width: 768px) {
+    .gp-hero h1 {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 640px) {
+    .gp-hero h1 {
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+}
+
+/* Animations */
+.gp-hero-content.show .banner-heading {
+    animation: fadeSlideIn 1s ease forwards;
+}
+
+@keyframes fadeSlideIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Buttons */
+.gp-btn {
+    display: inline-block;
+    background: #ff5722;
+    padding: 12px 24px;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: bold;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.gp-btn:hover {
+    transform: scale(1.1);
+    background: #ff784e;
+}
+
+@media (max-width: 640px) {
+    .gp-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+/* ==========================================================================
+   4. Z-INDEX FIXES FOR STACKING CONTEXT
+   ========================================================================== */
+
+/* Ensure proper stacking */
+header {
+    z-index: 1000;
+}
+
+.mobile-menu {
+    z-index: 999;
+}
+
+.gp-hero {
+    z-index: 1;
+}
+
+/* Prevent content from hiding behind fixed header */
+section {
+    position: relative;
+    z-index: 2;
+}
+
+/* ==========================================================================
+   5. UTILITY CLASSES FOR MOBILE
+   ========================================================================== */
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Prevent horizontal scroll on mobile */
+body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* Touch targets for mobile */
+@media (max-width: 768px) {
+    button, a {
+        min-height: 44px;
+        min-width: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Prevent text zoom on iOS */
+    input, select, textarea {
+        font-size: 16px;
+    }
+}
+
+/* Hide scrollbar for cleaner look */
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+/* Fix for mega menu mouse gap */
+.products-mega-menu .mega-dropdown {
+    margin-top: 0 !important;
+    padding-top: 4px !important; /* Creates an invisible hover zone */
+}
+
+.products-mega-menu .mega-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -4px; /* Extends hover area upwards */
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: transparent;
+}
+
+/* Company-Product mega menu styling */
+.products-mega-menu .mega-dropdown {
+    min-height: 450px;
+}
+
+/* Smooth scrollbars for mega menu */
+.mega-dropdown div[style*="max-height"]::-webkit-scrollbar {
+    width: 6px;
+}
+
+.mega-dropdown div[style*="max-height"]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.mega-dropdown div[style*="max-height"]::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.mega-dropdown div[style*="max-height"]::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Make sure mega menu appears above everything */
+.mega-dropdown {
+    z-index: 9999 !important;
+}
+
+/* Fix mouse navigation gap */
+.products-mega-menu {
+    position: relative;
+}
+
+.products-mega-menu .mega-dropdown {
+    margin-top: 2px;
+}
+
+/* Better hover effects for company buttons */
+.products-mega-menu button[class*="hover:bg-blue-100"]:hover {
+    background-color: #dbeafe !important;
+}
+
+/* Transition for company selection */
+.products-mega-menu button {
+    transition: all 0.2s ease;
+}

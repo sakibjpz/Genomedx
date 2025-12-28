@@ -76,14 +76,52 @@ class ProductController extends Controller
     $query = $request->input('query');
 
     $products = \App\Models\Product::where('name', 'like', "%{$query}%")->get();
-     $socialLinks = SocialLink::all(); // add this line
-
-   $flags = Flag::all(); // add this for flags
-
-    return view('front.products.search-results', compact('products', 'query', 'socialLinks', 'flags'));
-       $menus = Menu::all();                        // add this for menu
+    $socialLinks = SocialLink::all();
+    $flags = Flag::all();
+    $menus = Menu::orderBy('order')->get();
 
     return view('front.products.search-results', compact('products', 'query', 'socialLinks', 'flags', 'menus'));
+}
+
+public function searchSuggestions(Request $request)
+{
+    $query = $request->get('query');
+    
+    if (strlen($query) < 2) {
+        return response()->json([]);
+    }
+    
+    // Search products
+    $products = \App\Models\Product::where('status', 1)
+        ->where('name', 'LIKE', "%{$query}%")
+        ->limit(5)
+        ->get()
+        ->map(function($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'type' => 'Product',
+                'url' => route('products.show', $product)
+            ];
+        });
+    
+    // Search product groups
+    $groups = \App\Models\ProductGroup::where('status', 1)
+        ->where('name', 'LIKE', "%{$query}%")
+        ->limit(5)
+        ->get()
+        ->map(function($group) {
+            return [
+                'id' => $group->id,
+                'name' => $group->name,
+                'type' => 'Product Group',
+                'url' => route('products.index', $group->slug)
+            ];
+        });
+    
+    $suggestions = $products->merge($groups)->take(8);
+    
+    return response()->json($suggestions);
 }
 
 

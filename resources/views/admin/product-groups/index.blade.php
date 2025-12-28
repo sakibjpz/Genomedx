@@ -50,7 +50,7 @@
                 
                 <div>
                     <label class="block text-sm font-medium mb-1">Company (Optional)</label>
-                    <select name="company_id" class="w-full border rounded p-2">
+                    <select name="company_id" class="w-full border rounded p-2" required>
                         <option value="">-- No Company --</option>
                         @foreach(\App\Models\Company::active()->ordered()->get() as $company)
                             <option value="{{ $company->id }}">
@@ -81,67 +81,80 @@
                     <th class="p-3">#</th>
                     <th>Icon</th>
                     <th>Name</th>
+                    <th>Company</th>
                     <th>Color</th>
                     <th>Slug</th>
                     <th>Status</th>
                     <th>Actions</th> 
                 </tr>
             </thead>
-            <tbody>
-                @forelse($groups as $group)
-                    <tr class="border-t" id="group-{{ $group->id }}">
-                        <td class="p-3">{{ $loop->iteration }}</td>
+          <tbody>
+    @forelse($groups as $group)
+        <tr class="border-t" id="group-{{ $group->id }}">
+            <td class="p-3">{{ $loop->iteration }}</td>
 
-                        <td>
-                            @if($group->icon)
-                                <img src="{{ asset('storage/'.$group->icon) }}" alt="{{ $group->name }}" class="w-8 h-8">
-                            @else
-                                -
-                            @endif
-                        </td>
+            <td>
+                @if($group->icon)
+                    <img src="{{ asset('storage/'.$group->icon) }}" alt="{{ $group->name }}" class="w-8 h-8">
+                @else
+                    -
+                @endif
+            </td>
 
-                        <td class="group-name">{{ $group->name }}</td>
+            <td class="group-name">{{ $group->name }}</td>
 
-                        <td>
-                            <span class="w-6 h-6 inline-block rounded border group-color" 
-                                  style="background-color: {{ $group->colorHex() }}"></span>
-                        </td>
+            <!-- ADD THIS COMPANY COLUMN -->
+            <td>
+                @if($group->company)
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">
+                        {{ $group->company->name }}
+                    </span>
+                @else
+                    <span class="px-2 py-1 bg-gray-100 text-gray-500 rounded text-sm">
+                        No Company
+                    </span>
+                @endif
+            </td>
 
-                        <td>{{ $group->slug }}</td>
+            <td>
+                <span class="w-6 h-6 inline-block rounded border group-color" 
+                      style="background-color: {{ $group->colorHex() }}"></span>
+            </td>
 
-                        <td class="group-status">{{ $group->status ? 'Active' : 'Inactive' }}</td>
+            <td>{{ $group->slug }}</td>
 
-                        <td class="space-x-2">
-                            <button class="edit-group px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
-                                    data-id="{{ $group->id }}"
-                                    data-name="{{ $group->name }}"
-                                    data-color="{{ $group->color }}"
-                                    data-position="{{ $group->position }}"
-                                    data-status="{{ $group->status }}"
-                                    data-company-id="{{ $group->company_id }}">
-                                Edit
-                            </button>
+            <td class="group-status">{{ $group->status ? 'Active' : 'Inactive' }}</td>
 
-                            <button class="delete-group px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
-                                    data-id="{{ $group->id }}">
-                                Delete
-                            </button>
-                            <a href="{{ route('admin.product-groups.products.create', $group->id) }}"
-   style="background-color: #10b981; color: white; padding: 4px 8px; border-radius: 4px; display: inline-flex; align-items: center;"
-   class="inline-flex items-center px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition">
-    Add Product
-</a>
-                        </td>
+            <td class="space-x-2">
+                <button class="edit-group px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
+                        data-id="{{ $group->id }}"
+                        data-name="{{ $group->name }}"
+                        data-color="{{ $group->color }}"
+                        data-position="{{ $group->position }}"
+                        data-status="{{ $group->status }}"
+                        data-company-id="{{ $group->company_id }}">
+                    Edit
+                </button>
 
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7" class="p-4 text-center text-gray-500">
-                            No product groups yet.
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
+                <button class="delete-group px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
+                        data-id="{{ $group->id }}">
+                    Delete
+                </button>
+                <a href="{{ route('admin.product-groups.products.create', $group->id) }}"
+                   style="background-color: #10b981; color: white; padding: 4px 8px; border-radius: 4px; display: inline-flex; align-items: center;"
+                   class="inline-flex items-center px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition">
+                    Add Product
+                </a>
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="8" class="p-4 text-center text-gray-500"> <!-- Change colspan to 8 -->
+                No product groups yet.
+            </td>
+        </tr>
+    @endforelse
+</tbody>
         </table>
     </div>
 
@@ -304,5 +317,8 @@
         })
         .catch(err => console.error(err));
     });
+
+
+
 </script>
 @endsection

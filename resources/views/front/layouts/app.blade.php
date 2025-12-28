@@ -2,386 +2,404 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'GeneProof Clone')</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <title>@yield('title', 'Genenomedx')</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-
-  <style>
-    /* ==========================================================================
-       1. GLOBAL & BASE STYLES
-       ========================================================================== */
-    [x-cloak] { display: none !important; }
-
-    body {
-        font-family: 'Poppins', sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-
-    /* Standard Utilities */
-    .border-3 { border-width: 3px; }
-
-    /* ==========================================================================
-       2. HEADER & NAVIGATION
-       ========================================================================== */
-    header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1000;
-        background: white;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    .gp-logo img {
-        width: 200px;
-        height: auto;
-    }
-
-    .header-small-text {
-        font-size: 15px;
-    }
-
-    /* Mega Menu Internal Scroll Fix */
-    .mega-menu-scroll {
-        max-height: calc(100vh - 200px);
-        overscroll-behavior: contain;
-        overflow-y: auto;
-    }
-
-    /* Header Responsive Breakpoints */
-    @media (max-width: 1024px) {
-        .gp-logo img { width: 160px; }
-        .header-small-text { font-size: 10px; }
-    }
-
-    @media (max-width: 640px) {
-        .gp-logo img { width: 120px; }
-        .header-small-text { font-size: 8px; }
-    }
-
-    /* ==========================================================================
-       3. MAIN CONTENT & HERO BANNER
-       ========================================================================== */
-    main {
-        padding-top: 140px; /* Adjusted for double-row sticky header */
-    }
-
-    .gp-hero {
-        height: 550px;
-        background-size: cover;
-        background-position: center;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #fff;
-        text-align: center;
-    }
-
-    .gp-overlay {
-        position: absolute;
-        inset: 0;
-        background: rgba(0,0,0,0.40);
-    }
-
-    .gp-hero-content {
-        position: relative;
-        z-index: 2;
-        padding: 20px;
-        opacity: 0;
-        transform: translateY(20px);
-        transition: all 1s ease-in-out;
-    }
-
-    .gp-hero-content.show {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .gp-hero h1 {
-        font-size: 48px;
-        font-weight: 800;
-        margin-bottom: 20px;
-    }
-
-    /* Animations */
-    .gp-hero-content.show .banner-heading {
-        animation: fadeSlideIn 1s ease forwards;
-    }
-
-    @keyframes fadeSlideIn {
-        0% { opacity: 0; transform: translateY(20px); }
-        100% { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Buttons */
-    .gp-btn {
-        display: inline-block;
-        background: #ff5722;
-        padding: 12px 24px;
-        border-radius: 6px;
-        color: #fff;
-        font-weight: bold;
-        transition: transform 0.3s ease, background 0.3s ease;
-    }
-
-    .gp-btn:hover {
-        transform: scale(1.1);
-        background: #ff784e;
-    }
-
-    /* ==========================================================================
-       4. SECTION SPECIFIC STYLES
-       ========================================================================== */
-
-    /* Molecular Diagnostics */
-    .molecular-diagnostics-section * { -webkit-tap-highlight-color: transparent; }
     
-    @media (max-width: 640px) {
-        .molecular-diagnostics-section h1,
-        .molecular-diagnostics-section h2 { line-height: 1.2; }
-    }
-    
-    @media (max-width: 768px) {
-        .molecular-diagnostics-section .cta-button {
-            min-height: 44px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-    }
-
-    /* Why Choose Section */
-    .why-choose-section * { -webkit-tap-highlight-color: transparent; }
-    .why-choose-section a { transition: all 0.3s ease; }
-    .why-choose-section .rounded-full { transition: all 0.3s ease; }
-    
-    .why-choose-section .text-center:hover .rounded-full {
-        transform: scale(1.05);
-        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-    }
-
-    @media (max-width: 768px) {
-        .why-choose-section .distributor-cta-button {
-            min-height: 60px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-    }
-
-    /* Products Section */
-    .geneproof-products-section * { -webkit-tap-highlight-color: transparent; }
-    .product-card { transition: all 0.3s ease; }
-    .product-card:hover { transform: translateY(-5px); }
-
-    /* ==========================================================================
-       5. FOOTER STYLES
-       ========================================================================== */
-    .geneproof-footer-section * { -webkit-tap-highlight-color: transparent; }
-    .social-icon { transition: all 0.3s ease; }
-    .social-icon:hover { box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); }
-    .geneproof-footer-section a { transition: all 0.3s ease; }
-
-    @media (max-width: 640px) {
-        .geneproof-footer-section a[href^="tel"] {
-            font-size: 2rem;
-            word-break: break-all;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .geneproof-footer-section, 
-        .geneproof-footer-section .md\:text-right {
-            text-align: center;
-        }
-    }
-</style>
+    @vite(['resources/css/custom.css', 'resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
 </head>
-<body>
+<body class="relative">
 
   {{-- Full Header --}}
-  <header class="w-full">
+  <header class="w-full" x-data="{ mobileMenuOpen: false }">
 
         {{-- Top Row --}}
-        <div class="w-full flex items-center justify-between px-12 py-5 bg-white">
+        <div class="w-full flex items-center justify-between px-4 md:px-12 py-3 md:py-5 bg-white">
 
-            {{-- Left: Logo --}}
-<div class="flex items-start space-x-3">
+          {{-- Left: Logo --}}
+<div class="flex items-center space-x-3">
     <div class="gp-logo">
         <a href="{{ url('/') }}">
-            <img src="{{ asset('images/logo.jpg') }}" alt="Genomedx logo">
+            <img src="{{ asset('images/logo.jpg') }}" alt="Genomedx logo" 
+                 style="width: auto; height: 55px; max-width: none !important;">
         </a>
     </div>
 </div>
 
-            {{-- Right: Icons & Links --}}
-            <div class="flex items-center space-x-6">
+            {{-- Desktop: Icons & Links - Show on lg screens and above --}}
+            <div class="hidden lg:flex items-center space-x-4 xl:space-x-6">
 
-                <a href="#" class="text-orange-500 font-medium header-small-text">e-Document finder</a>
+                <a href="#" class="text-orange-500 font-medium header-small-text hidden xl:inline">e-Document finder</a>
 
-             {{-- Social Icons --}}
-<div class="flex items-center space-x-3">
-    @foreach($socialLinks as $social)
-        <a href="{{ $social->url }}"
-           target="_blank"
-           class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white text-xl header-small-text">
-            <i class="{{ $social->icon }}"></i>
-        </a>
-    @endforeach
+                {{-- Social Icons --}}
+                <div class="flex items-center space-x-3">
+                    @foreach($socialLinks as $social)
+                        <a href="{{ $social->url }}"
+                           target="_blank"
+                           class="w-8 h-8 xl:w-9 xl:h-9 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm xl:text-base header-small-text">
+                            <i class="{{ $social->icon }}"></i>
+                        </a>
+                    @endforeach
+                </div>
+
+                <div class="flex items-center text-blue-600 font-medium header-small-text">
+                    <a href="{{ route('login') }}">Login</a>
+                    <span class="mx-1 text-gray-500">/</span>
+                    <a href="{{ route('register') }}">Register</a>
+                </div>
+
+                <div class="flex items-center header-small-text">
+                    @foreach($flags as $index => $flag)
+                        <img src="{{ asset('storage/flags/'.$flag->image) }}" class="w-6 xl:w-7 mx-1">
+                        @if($index < count($flags) - 1)
+                            <span>/</span>
+                        @endif
+                    @endforeach
+                </div>
+
+                {{-- Search with Autocomplete --}}
+<div x-data="{
+    query: '',
+    suggestions: [],
+    showSuggestions: false,
+    
+    async searchSuggestions() {
+        if (this.query.length < 2) {
+            this.suggestions = [];
+            return;
+        }
+        
+        try {
+            const response = await fetch(`{{ route('products.search.suggestions') }}?query=${this.query}`);
+            const data = await response.json();
+            this.suggestions = data;
+            this.showSuggestions = true;
+        } catch (error) {
+            console.error('Search error:', error);
+        }
+    }
+}" 
+class="relative header-small-text">
+    
+    <form action="{{ route('products.search') }}" method="GET" class="flex items-center space-x-2">
+        <div class="relative">
+            <input 
+                type="text" 
+                name="query" 
+                x-model="query"
+                @input.debounce.300ms="searchSuggestions()"
+                @focus="if(suggestions.length) showSuggestions = true"
+                @blur="setTimeout(() => showSuggestions = false, 200)"
+                placeholder="Search products..." 
+                class="border rounded px-2 py-1 text-sm w-32 xl:w-40" 
+                required
+                autocomplete="off">
+            
+            {{-- Suggestions Dropdown --}}
+            <div x-show="showSuggestions && suggestions.length > 0" 
+                 x-transition
+                 x-cloak
+                 class="absolute top-full left-0 right-0 bg-white border rounded-b shadow-lg z-50 mt-1 max-h-60 overflow-y-auto">
+                
+                <template x-for="item in suggestions" :key="item.id + item.type">
+                    <a :href="item.url" 
+                       class="block px-3 py-2 hover:bg-gray-100 border-b last:border-b-0">
+                        <div class="font-medium" x-text="item.name"></div>
+                        <div class="text-xs text-gray-500" x-text="item.type"></div>
+                    </a>
+                </template>
+            </div>
+        </div>
+        
+        <button type="submit" class="w-8 h-8 xl:w-9 xl:h-9 flex items-center justify-center bg-blue-600 text-white rounded">
+            🔍
+        </button>
+    </form>
 </div>
-
-
-           <div class="flex items-center text-blue-600 font-medium header-small-text">
-    <a href="{{ route('login') }}">Login</a>
-    <span class="mx-1 text-gray-500">/</span>
-    <a href="{{ route('register') }}">Register</a>
-</div>
-
-
-
-
-              <div class="flex items-center header-small-text">
-    @foreach($flags as $index => $flag)
-        <img src="{{ asset('storage/flags/'.$flag->image) }}" class="w-7 mx-1">
-        @if($index < count($flags) - 1)
-            <span>/</span>
-        @endif
-    @endforeach
-</div>
-
-
-            {{-- Search --}}
-<form action="{{ route('products.search') }}" method="GET" class="flex items-center space-x-2 header-small-text">
-    <input type="text" name="query" placeholder="Search product..." class="border rounded px-2 py-1" required>
-    <button type="submit" class="w-9 h-9 flex items-center justify-center text-white text-xl">
-        🔍
-    </button>
-</form>
-
-
             </div>
 
+            {{-- Mobile Menu Toggle - Only show on screens smaller than lg (1024px) --}}
+            <button @click="mobileMenuOpen = !mobileMenuOpen" 
+                    class="lg:hidden text-blue-700 text-2xl p-2 focus:outline-none z-50">
+                <i class="fas" :class="mobileMenuOpen ? 'fa-times' : 'fa-bars'"></i>
+            </button>
+
         </div>
-{{-- Bottom Navigation Row --}}
-<div class="w-full bg-white shadow py-3 relative z-40"> {{-- relative & z-index are key here --}}
-    <nav class="flex flex-nowrap justify-center gap-8 text-blue-700 font-semibold text-lg overflow-x-auto">
-        @foreach($menus->where('parent_id', null)->sortBy('order') as $menu)
-            {{-- PRODUCTS MEGA MENU --}}
-            @if($menu->name === 'Products')
-                @php
-                    $productGroups = \App\Models\ProductGroup::withCount('products')
-                        ->orderBy('position')
-                        ->get();
-                @endphp
-                
-                <div class="static" x-data="{ open: false }" 
-                     @mouseenter="open = true" 
-                     @mouseleave="open = false">
-                    
-                    {{-- Products Button --}}
-                 <button class="hover:text-blue-900 font-semibold whitespace-nowrap"
-        @click="open = !open" 
-        @keydown.escape.window="open = false">
-    Products
-</button>
 
-                    {{-- Mega Menu Dropdown --}}
-                    {{-- Added: x-cloak, @wheel.stop, and better positioning --}}
-                    <div x-show="open" x-transition x-cloak 
-     class="absolute left-1/2 -translate-x-1/2 top-full mt-0 w-[1800px] max-w-[98vw] sm:max-w-full bg-white border rounded-b-lg shadow-2xl z-50 overflow-hidden">
+        {{-- Desktop Navigation Row - Show on lg screens and above --}}
+        <div class="hidden lg:block w-full bg-white shadow py-3 relative z-40">
+            <nav class="flex flex-nowrap justify-center gap-6 xl:gap-8 text-blue-700 font-semibold text-base xl:text-lg overflow-x-auto px-4">
+                @foreach($menus->where('parent_id', null)->sortBy('order') as $menu)
+                    @if($menu->name === 'Products')
+                        {{-- PRODUCTS MEGA MENU WITH COMPANIES --}}
+                        <div class="static products-mega-menu" x-data="{ 
+                            open: false,
+                            selectedCompany: null
+                        }">
+                            
+                            {{-- Products Button --}}
+                            <button class="hover:text-blue-900 font-semibold whitespace-nowrap py-2 relative z-50"
+                                @click="open = !open" 
+                                @mouseenter="open = true"
+                                @keydown.escape.window="open = false; selectedCompany = null;">
+                                Products
+                            </button>
 
-                        {{-- INNER CONTAINER: This is where we fix the height --}}
-                        {{-- max-h-[calc(100vh-180px)] ensures it fits on your screen even with a sticky header --}}
-                        <div class="p-12 overflow-y-auto" 
-                             style="max-height: calc(100vh - 180px); overscroll-behavior: contain;">
-                            
-                            {{-- Header --}}
-                            <div class="mb-10">
-                                <h3 class="text-3xl font-bold text-gray-800 whitespace-nowrap">All Product Groups</h3>
-                            </div>
-                            
-                            @if($productGroups->count() > 0)
-                                {{-- Your exact 3-column grid --}}
-                                <div class="grid grid-cols-3 gap-x-32 gap-y-10">
-                                    @foreach($productGroups as $group)
-                                        <a href="{{ route('products.index', $group) }}"
-                                           class="flex items-center justify-between hover:text-blue-600 transition-all duration-200 group hover:bg-blue-50 p-4 rounded-lg">
-                                            
-                                            <div class="flex-grow min-w-0 mr-8">
-                                                <div class="text-xl font-semibold text-gray-800 group-hover:text-blue-600 whitespace-nowrap overflow-hidden text-ellipsis">
-                                                    {{ $group->name }}
-                                                </div>
+                            {{-- Mega Menu Dropdown --}}
+                            <div x-show="open" 
+                                x-transition
+                                x-cloak
+                                @mouseenter="open = true"
+                                @mouseleave="open = false"
+                                class="mega-dropdown absolute left-1/2 -translate-x-1/2 top-full mt-0 w-[900px] max-w-[95vw] bg-white border rounded-b-lg shadow-2xl z-50 overflow-hidden"
+                                style="margin-top: 2px !important;">
+                                
+                                <div class="flex min-h-[400px]">
+                                    
+                                    {{-- Left Column: Companies List --}}
+                                    <div class="w-1/3 border-r bg-gray-50 p-6 overflow-y-auto" style="max-height: 70vh;">
+                                        <h3 class="text-xl font-bold text-gray-800 mb-6">Select Company</h3>
+                                        
+                                        <div class="space-y-2">
+                                            @foreach($companies as $company)
+                                                <button 
+                                                    @click="selectedCompany = {{ $company->id }}"
+                                                    @mouseenter="selectedCompany = {{ $company->id }}"
+                                                    :class="{
+                                                        'bg-blue-600 text-white': selectedCompany == {{ $company->id }},
+                                                        'hover:bg-blue-100': selectedCompany != {{ $company->id }}
+                                                    }"
+                                                    class="w-full text-left p-4 rounded-lg transition-all duration-200 flex items-center justify-between">
+                                                    
+                                                    <div>
+                                                        <div class="font-semibold">{{ $company->name }}</div>
+                                                        <div class="text-sm text-gray-600 mt-1">
+                                                            {{ $company->active_product_groups_count }} product groups
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <i class="fas fa-chevron-right text-sm"></i>
+                                                </button>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    
+                                    {{-- Right Column: Product Groups of Selected Company --}}
+                                    <div class="w-2/3 p-6 overflow-y-auto" style="max-height: 70vh;">
+                                        <template x-if="selectedCompany">
+                                            <div>
+                                                @foreach($companies as $company)
+                                                    <div x-show="selectedCompany == {{ $company->id }}">
+                                                        <div class="flex items-center justify-between mb-6">
+                                                            <h3 class="text-2xl font-bold text-gray-800">
+                                                                {{ $company->name }} Products
+                                                            </h3>
+                                                            <a href="{{ route('companies.show', $company) }}" 
+                                                               class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                                                View All →
+                                                            </a>
+                                                        </div>
+                                                        
+                                                        @if($company->activeProductGroups->count() > 0)
+                                                            <div class="grid grid-cols-1 gap-3">
+                                                                @foreach($company->activeProductGroups as $group)
+                                                                    <a href="{{ route('products.index', $group->slug) }}"
+                                                                       class="flex items-center justify-between hover:text-blue-600 transition-all duration-200 group hover:bg-blue-50 p-4 rounded-lg">
+                                                                        
+                                                                        <div class="flex-grow min-w-0 mr-8">
+                                                                            <div class="text-lg font-semibold text-gray-800 group-hover:text-blue-600 whitespace-nowrap overflow-hidden text-ellipsis">
+                                                                                {{ $group->name }}
+                                                                            </div>
+                                                                            <div class="text-sm text-gray-600 mt-1">
+                                                                                {{ $group->products_count }} products
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        @if($group->image || $group->icon || $group->image_path)
+                                                                            @php
+                                                                                $path = $group->image ?? $group->icon ?? $group->image_path;
+                                                                                $isAsset = str_contains($path, 'assets/');
+                                                                            @endphp
+                                                                            <div class="w-12 h-12 flex-shrink-0">
+                                                                                <img src="{{ $isAsset ? asset($path) : asset('storage/' . $path) }}" 
+                                                                                     alt="{{ $group->name }}"
+                                                                                     class="w-full h-full object-contain">
+                                                                            </div>
+                                                                        @endif
+                                                                    </a>
+                                                                @endforeach
+                                                            </div>
+                                                        @else
+                                                            <div class="text-center py-12 text-gray-500">
+                                                                <div class="text-4xl mb-3">📦</div>
+                                                                <div class="text-lg">No product groups available</div>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                @endforeach
                                             </div>
-                                            
-                                            @if($group->image || $group->icon || $group->image_path)
-                                                <div class="w-12 h-12 flex-shrink-0">
-                                                    @php
-                                                        $path = $group->image ?? $group->icon ?? $group->image_path;
-                                                        $isAsset = str_contains($path, 'assets/');
-                                                    @endphp
-                                                    <img src="{{ $isAsset ? asset($path) : asset('storage/' . $path) }}" 
-                                                         alt="{{ $group->name }}"
-                                                         class="w-full h-full object-contain">
-                                                </div>
-                                            @endif
+                                        </template>
+                                        
+                                        {{-- Default view when no company selected --}}
+                                        <template x-if="!selectedCompany">
+                                            <div class="h-full flex flex-col items-center justify-center text-gray-500">
+                                                <div class="text-5xl mb-4">🏢</div>
+                                                <h3 class="text-2xl font-bold mb-2">Select a Company</h3>
+                                                <p class="text-gray-600">Choose a company from the left to view their products</p>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        {{-- OTHER PARENT MENUS --}}
+                        <div class="relative" x-data="{ open: false }">
+                            <a href="{{ $menu->url ?? '#' }}" 
+                               class="hover:text-blue-900 whitespace-nowrap py-2 block">
+                               {{ $menu->name }}
+                            </a>
+
+                            @if($menu->children->count() > 0)
+                                <div x-show="open" x-transition
+                                     class="absolute left-0 top-full mt-2 w-56 bg-white border rounded-lg shadow-lg z-50 py-2">
+                                    @foreach($menu->children as $child)
+                                        <a href="{{ $child->url ?? '#' }}" 
+                                           class="block px-5 py-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 whitespace-nowrap">
+                                            {{ $child->name }}
                                         </a>
                                     @endforeach
-                                    
-                                </div>
-                            @else
-                                <div class="text-center py-12 text-gray-500">
-                                    <div class="text-4xl mb-3">📦</div>
-                                    <div class="text-lg">No product groups available</div>
                                 </div>
                             @endif
                         </div>
+                    @endif
+                @endforeach
+            </nav>
+        </div>
+
+        {{-- Mobile Menu - Show on screens smaller than lg (1024px) --}}
+        <div x-show="mobileMenuOpen" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 transform translate-x-full"
+             x-transition:enter-end="opacity-100 transform translate-x-0"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 transform translate-x-0"
+             x-transition:leave-end="opacity-0 transform translate-x-full"
+             @click.away="mobileMenuOpen = false"
+             class="lg:hidden fixed inset-0 bg-white z-40 overflow-y-auto pt-20"
+             style="display: none;">
+            
+            <div class="px-6 py-6 space-y-6">
+                
+                {{-- Search Mobile --}}
+                <form action="{{ route('products.search') }}" method="GET" class="flex items-center space-x-2 pb-4 border-b">
+                    <input type="text" name="query" placeholder="Search product..." class="border rounded px-3 py-2 flex-1" required>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
+                        🔍
+                    </button>
+                </form>
+
+                {{-- Navigation Links --}}
+                <nav class="space-y-4">
+                    @foreach($menus->where('parent_id', null)->sortBy('order') as $menu)
+                        
+                        @if($menu->name === 'Products')
+                            @php
+                                $productGroups = \App\Models\ProductGroup::withCount('products')
+                                    ->orderBy('position')
+                                    ->get();
+                            @endphp
+                            
+                            <div x-data="{ productsOpen: false }">
+                                <button @click="productsOpen = !productsOpen" 
+                                        class="w-full flex items-center justify-between text-blue-700 font-semibold text-lg py-2">
+                                    Products
+                                    <i class="fas fa-chevron-down transition-transform" :class="productsOpen && 'rotate-180'"></i>
+                                </button>
+                                
+                                <div x-show="productsOpen" x-collapse class="pl-4 mt-2 space-y-2">
+                                    @foreach($productGroups as $group)
+                                        <a href="{{ route('products.index', $group->slug) }}"
+                                           class="block py-2 text-gray-700 hover:text-blue-600">
+                                            {{ $group->name }}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @else
+                            <div x-data="{ submenuOpen: false }">
+                                @if($menu->children->count() > 0)
+                                    <button @click="submenuOpen = !submenuOpen" 
+                                            class="w-full flex items-center justify-between text-blue-700 font-semibold text-lg py-2">
+                                        {{ $menu->name }}
+                                        <i class="fas fa-chevron-down transition-transform" :class="submenuOpen && 'rotate-180'"></i>
+                                    </button>
+                                    
+                                    <div x-show="submenuOpen" x-collapse class="pl-4 mt-2 space-y-2">
+                                        @foreach($menu->children as $child)
+                                            <a href="{{ $child->url ?? '#' }}" 
+                                               class="block py-2 text-gray-700 hover:text-blue-600">
+                                                {{ $child->name }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <a href="{{ $menu->url ?? '#' }}" 
+                                       class="block text-blue-700 font-semibold text-lg py-2">
+                                        {{ $menu->name }}
+                                    </a>
+                                @endif
+                            </div>
+                        @endif
+                        
+                    @endforeach
+                </nav>
+
+                {{-- Mobile Actions --}}
+                <div class="pt-4 border-t space-y-4">
+                    <a href="#" class="block text-orange-500 font-medium py-2">e-Document finder</a>
+                    
+                    <div class="flex items-center space-x-4">
+                        <a href="{{ route('login') }}" class="text-blue-600 font-medium">Login</a>
+                        <span class="text-gray-500">/</span>
+                        <a href="{{ route('register') }}" class="text-blue-600 font-medium">Register</a>
+                    </div>
+
+                    {{-- Social Icons Mobile --}}
+                    <div class="flex items-center space-x-3">
+                        @foreach($socialLinks as $social)
+                            <a href="{{ $social->url }}"
+                               target="_blank"
+                               class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white text-xl">
+                                <i class="{{ $social->icon }}"></i>
+                            </a>
+                        @endforeach
+                    </div>
+
+                    {{-- Flags Mobile --}}
+                    <div class="flex items-center space-x-2">
+                        @foreach($flags as $index => $flag)
+                            <img src="{{ asset('storage/flags/'.$flag->image) }}" class="w-8">
+                            @if($index < count($flags) - 1)
+                                <span>/</span>
+                            @endif
+                        @endforeach
                     </div>
                 </div>
 
-            {{-- OTHER PARENT MENUS --}}
-         
-@else
-    <div class="relative" x-data="{ open: false }">
-    <a href="{{ $menu->url ?? '#' }}" 
-   class="hover:text-blue-900 whitespace-nowrap">
-   {{ $menu->name }}
-</a>
-
-        @if($menu->children->count() > 0)
-            <div x-show="open" x-transition
-                 class="absolute left-0 top-full mt-2 w-56 bg-white border rounded-lg shadow-lg z-50 py-2">
-                @foreach($menu->children as $child)
-                    <a href="{{ $child->url ?? '#' }}" 
-                       class="block px-5 py-3 text-gray-700 hover:text-blue-600 hover:bg-gray-50 whitespace-nowrap">
-                        {{ $child->name }}
-                    </a>
-                @endforeach
             </div>
-        @endif
-    </div>
-@endif
+        </div>
 
-        @endforeach
-    </nav>
-</div>
     </header>
 
-
-    {{-- Main --}}
-    <main>
+    {{-- Main Content with Proper Spacing --}}
+    <main class="header-spacer pt-4">
         @yield('content')
     </main>
+
+
 
     {{-- Molecular Diagnostics Section --}}
 <section class="molecular-diagnostics-section bg-gray-50 py-8 sm:py-12 md:py-16">
@@ -524,7 +542,7 @@
 
 
 
-<section class="py-20 bg-white">
+{{-- <section class="py-20 bg-white">
     <div class="container mx-auto">
 
         <!-- Section Title -->
@@ -587,7 +605,146 @@
 
         </div>
     </div>
+</section> --}}
+
+
+<!-- Dynamic News Section -->
+<section class="py-16 md:py-20 lg:py-24 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-12 md:mb-16">
+            <span class="inline-block px-4 py-1 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full mb-4">
+                Latest Updates
+            </span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
+                News & Events
+            </h2>
+            <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+                Stay updated with our latest achievements, events, and announcements
+            </p>
+        </div>
+
+        @if($latestNews->count() > 0)
+            <!-- News Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                @foreach($latestNews as $news)
+                    <article class="group relative bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                        <!-- Image Container -->
+                        <div class="relative h-64 overflow-hidden">
+                            @if($news->image)
+                                <img src="{{ asset('storage/' . $news->image) }}" 
+                                     alt="{{ $news->title }}"
+                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            @else
+                                <div class="w-full h-full bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center">
+                                    <i class="fas fa-newspaper text-gray-300 text-6xl"></i>
+                                </div>
+                            @endif
+                            
+                            <!-- Category Badge -->
+                            <div class="absolute top-4 left-4">
+                                <span class="px-3 py-1 text-xs font-semibold text-white rounded-full {{ $news->categoryColor }} shadow-lg">
+                                    {{ $news->categoryLabel }}
+                                </span>
+                            </div>
+                            
+                            <!-- Date Overlay -->
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                <time class="text-white text-sm font-medium">
+                                    <i class="fas fa-calendar-alt mr-2"></i>
+                                    {{ $news->published_date->format('d M, Y') }}
+                                </time>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-6 md:p-8">
+                            <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
+                                <a href="{{ route('news.show', $news) }}" class="hover:no-underline">
+                                    {{ $news->title }}
+                                </a>
+                            </h3>
+                            
+                            @if($news->excerpt)
+                                <p class="text-gray-600 mb-4 line-clamp-3">
+                                    {{ $news->excerpt }}
+                                </p>
+                            @endif
+
+                            <!-- Read More Button -->
+                            <div class="pt-4 border-t border-gray-100">
+                                <a href="{{ route('news.show', $news) }}" 
+                                   class="inline-flex items-center text-blue-600 font-semibold group-hover:text-blue-700 transition-colors">
+                                    Read Full Story
+                                    <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Hover Effect Overlay -->
+                        <div class="absolute inset-0 border-2 border-transparent group-hover:border-blue-500 rounded-2xl transition-colors duration-300 pointer-events-none"></div>
+                    </article>
+                @endforeach
+            </div>
+
+            <!-- View All Button -->
+            <div class="text-center mt-12 md:mt-16">
+                <a href="{{ route('news.index') }}" 
+                   class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                    <span>View All News & Events</span>
+                    <i class="fas fa-arrow-right ml-3"></i>
+                </a>
+            </div>
+        @else
+            <!-- Empty State -->
+            <div class="text-center py-12">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-blue-100 rounded-full mb-6">
+                    <i class="fas fa-newspaper text-blue-600 text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">No News Yet</h3>
+                <p class="text-gray-600 mb-6">Check back later for updates and announcements</p>
+                @auth
+                    <a href="{{ route('admin.news.create') }}" 
+                       class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        <i class="fas fa-plus mr-2"></i> Add First News
+                    </a>
+                @endauth
+            </div>
+        @endif
+    </div>
 </section>
+
+<!-- Styles for line-clamp -->
+<style>
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>
+
+<!-- Styles for line-clamp -->
+<style>
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>
 
 
 

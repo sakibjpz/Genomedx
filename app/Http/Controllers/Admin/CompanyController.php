@@ -34,15 +34,23 @@ class CompanyController extends Controller
             'name' => 'required|string|max:255|unique:companies',
             'slug' => 'required|string|max:255|unique:companies',
             'is_active' => 'boolean',
-            'sort_order' => 'integer'
+            'sort_order' => 'integer',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // Added
         ]);
 
-        Company::create([
+        $data = [
             'name' => $request->name,
             'slug' => $request->slug,
             'is_active' => $request->boolean('is_active'),
             'sort_order' => $request->sort_order ?? 0
-        ]);
+        ];
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('company-images', 'public');
+        }
+
+        Company::create($data);
 
         return redirect()->route('admin.companies.index')
             ->with('success', 'Company created successfully.');
@@ -65,15 +73,23 @@ class CompanyController extends Controller
             'name' => 'required|string|max:255|unique:companies,name,' . $company->id,
             'slug' => 'required|string|max:255|unique:companies,slug,' . $company->id,
             'is_active' => 'boolean',
-            'sort_order' => 'integer'
+            'sort_order' => 'integer',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // Added
         ]);
 
-        $company->update([
+        $data = [
             'name' => $request->name,
             'slug' => $request->slug,
             'is_active' => $request->boolean('is_active'),
             'sort_order' => $request->sort_order ?? $company->sort_order
-        ]);
+        ];
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('company-images', 'public');
+        }
+
+        $company->update($data);
 
         return redirect()->route('admin.companies.index')
             ->with('success', 'Company updated successfully.');
