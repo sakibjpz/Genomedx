@@ -74,7 +74,7 @@
     </div>
 
     {{-- Groups Table --}}
-    <div class="bg-white rounded shadow">
+    <div class="bg-white rounded shadow overflow-x-auto">
         <table class="w-full text-left">
             <thead class="bg-gray-100">
                 <tr>
@@ -85,76 +85,77 @@
                     <th>Color</th>
                     <th>Slug</th>
                     <th>Status</th>
-                    <th>Actions</th> 
+                    <th class="actions-column">Actions</th>
                 </tr>
             </thead>
-          <tbody>
-    @forelse($groups as $group)
-        <tr class="border-t" id="group-{{ $group->id }}">
-            <td class="p-3">{{ $loop->iteration }}</td>
+            <tbody>
+                @forelse($groups as $group)
+                    <tr class="border-t" id="group-{{ $group->id }}">
+                        <td class="p-3">{{ $loop->iteration }}</td>
 
-            <td>
-                @if($group->icon)
-                    <img src="{{ asset('storage/'.$group->icon) }}" alt="{{ $group->name }}" class="w-8 h-8">
-                @else
-                    -
-                @endif
-            </td>
+                        <td>
+                            @if($group->icon)
+                                <img src="{{ asset('storage/'.$group->icon) }}" alt="{{ $group->name }}" class="w-8 h-8">
+                            @else
+                                -
+                            @endif
+                        </td>
 
-            <td class="group-name">{{ $group->name }}</td>
+                        <td class="group-name">{{ $group->name }}</td>
 
-            <!-- ADD THIS COMPANY COLUMN -->
-            <td>
-                @if($group->company)
-                    <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">
-                        {{ $group->company->name }}
-                    </span>
-                @else
-                    <span class="px-2 py-1 bg-gray-100 text-gray-500 rounded text-sm">
-                        No Company
-                    </span>
-                @endif
-            </td>
+                        <td>
+                            @if($group->company)
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">
+                                    {{ $group->company->name }}
+                                </span>
+                            @else
+                                <span class="px-2 py-1 bg-gray-100 text-gray-500 rounded text-sm">
+                                    No Company
+                                </span>
+                            @endif
+                        </td>
 
-            <td>
-                <span class="w-6 h-6 inline-block rounded border group-color" 
-                      style="background-color: {{ $group->colorHex() }}"></span>
-            </td>
+                        <td>
+                            <span class="w-6 h-6 inline-block rounded border group-color" 
+                                  style="background-color: {{ $group->colorHex() }}"></span>
+                        </td>
 
-            <td>{{ $group->slug }}</td>
+                        <td>{{ $group->slug }}</td>
 
-            <td class="group-status">{{ $group->status ? 'Active' : 'Inactive' }}</td>
+                        <td class="group-status">{{ $group->status ? 'Active' : 'Inactive' }}</td>
 
-            <td class="space-x-2">
-                <button class="edit-group px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
-                        data-id="{{ $group->id }}"
-                        data-name="{{ $group->name }}"
-                        data-color="{{ $group->color }}"
-                        data-position="{{ $group->position }}"
-                        data-status="{{ $group->status }}"
-                        data-company-id="{{ $group->company_id }}">
-                    Edit
-                </button>
+                        <td class="actions-column">
+                            <div class="action-buttons">
+                                <button class="edit-group btn-action btn-yellow"
+                                        data-id="{{ $group->id }}"
+                                        data-name="{{ $group->name }}"
+                                        data-color="{{ $group->color }}"
+                                        data-position="{{ $group->position }}"
+                                        data-status="{{ $group->status }}"
+                                        data-company-id="{{ $group->company_id }}">
+                                    Edit
+                                </button>
 
-                <button class="delete-group px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
-                        data-id="{{ $group->id }}">
-                    Delete
-                </button>
-                <a href="{{ route('admin.product-groups.products.create', $group->id) }}"
-                   style="background-color: #10b981; color: white; padding: 4px 8px; border-radius: 4px; display: inline-flex; align-items: center;"
-                   class="inline-flex items-center px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition">
-                    Add Product
-                </a>
-            </td>
-        </tr>
-    @empty
-        <tr>
-            <td colspan="8" class="p-4 text-center text-gray-500"> <!-- Change colspan to 8 -->
-                No product groups yet.
-            </td>
-        </tr>
-    @endforelse
-</tbody>
+                                <button class="delete-group btn-action btn-red"
+                                        data-id="{{ $group->id }}">
+                                    Delete
+                                </button>
+                                
+                                <a href="{{ route('admin.product-groups.products.create', $group->id) }}"
+                                   class="btn-action btn-green">
+                                    Add Product
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="8" class="p-4 text-center text-gray-500">
+                            No product groups yet.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
         </table>
     </div>
 
@@ -210,10 +211,10 @@
                 <label>Active</label>
             </div>
 
-          <div class="flex justify-end space-x-2 mt-6">
-   <button type="button" id="closeModal" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition">Cancel</button>
-    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Update</button>
-</div>
+            <div class="flex justify-end space-x-2 mt-6">
+                <button type="button" id="closeModal" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Update</button>
+            </div>
         </form>
     </div>
 </div>
@@ -280,7 +281,7 @@
 
     closeModal.addEventListener('click', () => editModal.classList.add('hidden'));
 
-    // AJAX Update - FIXED URL
+    // AJAX Update
     editForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const groupId = document.getElementById('editGroupId').value;
@@ -317,8 +318,258 @@
         })
         .catch(err => console.error(err));
     });
-
-
-
 </script>
+
+<style>
+    /* Table responsive styling */
+    table {
+        min-width: 1100px;
+        table-layout: fixed;
+        width: 100%;
+    }
+    
+    /* Column widths */
+    table th:nth-child(1),
+    table td:nth-child(1) {
+        width: 50px;
+    }
+    
+    table th:nth-child(2),
+    table td:nth-child(2) {
+        width: 60px;
+    }
+    
+    table th:nth-child(3),
+    table td:nth-child(3) {
+        width: 150px;
+    }
+    
+    table th:nth-child(4),
+    table td:nth-child(4) {
+        width: 150px;
+    }
+    
+    table th:nth-child(5),
+    table td:nth-child(5) {
+        width: 60px;
+    }
+    
+    table th:nth-child(6),
+    table td:nth-child(6) {
+        width: 120px;
+    }
+    
+    table th:nth-child(7),
+    table td:nth-child(7) {
+        width: 80px;
+    }
+    
+    /* Actions column styling */
+    .actions-column {
+        width: 220px !important;
+        padding: 12px 8px !important;
+    }
+    
+    /* Action buttons container */
+    .action-buttons {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    
+    /* Base button styling */
+    .btn-action {
+        padding: 6px 12px;
+        border-radius: 4px;
+        color: white;
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+        min-width: 65px;
+    }
+    
+    /* Button color variants */
+    .btn-yellow {
+        background-color: #eab308;
+    }
+    
+    .btn-yellow:hover {
+        background-color: #ca8a04;
+    }
+    
+    .btn-red {
+        background-color: #dc2626;
+    }
+    
+    .btn-red:hover {
+        background-color: #b91c1c;
+    }
+    
+    .btn-green {
+        background-color: #10b981;
+    }
+    
+    .btn-green:hover {
+        background-color: #059669;
+    }
+    
+    /* Sticky header for better UX */
+    thead th {
+        position: sticky;
+        top: 0;
+        background-color: #f3f4f6;
+        z-index: 10;
+    }
+    
+    /* Better table borders */
+    table td,
+    table th {
+        border-bottom: 1px solid #e5e7eb;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .action-buttons {
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .btn-action {
+            width: 100%;
+        }
+    }
+
+    /* Fix table container for better scrolling */
+.overflow-x-auto {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure table stays within container */
+.rounded.shadow {
+    max-width: 100%;
+}
+
+/* Better table layout */
+table {
+    min-width: 1100px;
+    table-layout: fixed;
+    width: 100%;
+}
+
+/* Column width fixes */
+table th:nth-child(1),
+table td:nth-child(1) {
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+}
+
+table th:nth-child(2),
+table td:nth-child(2) {
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
+}
+
+table th:nth-child(3),
+table td:nth-child(3) {
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+}
+
+table th:nth-child(4),
+table td:nth-child(4) {
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+}
+
+table th:nth-child(5),
+table td:nth-child(5) {
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
+}
+
+table th:nth-child(6),
+table td:nth-child(6) {
+    width: 120px;
+    min-width: 120px;
+    max-width: 120px;
+}
+
+table th:nth-child(7),
+table td:nth-child(7) {
+    width: 80px;
+    min-width: 80px;
+    max-width: 80px;
+}
+
+table th:nth-child(8),
+table td:nth-child(8) {
+    width: 220px;
+    min-width: 220px;
+    max-width: 220px;
+}
+
+/* Ensure text doesn't overflow */
+th, td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+
+/* Sticky header fix */
+thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f3f4f6;
+    z-index: 10;
+    border-bottom: 2px solid #d1d5db;
+}
+
+/* Add visual spacing */
+th {
+    padding: 12px 8px !important;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+td {
+    padding: 10px 8px !important;
+    font-size: 14px;
+}
+/* Fix modal z-index to appear above table header */
+#editModal {
+    z-index: 1000;
+}
+
+#editModal > div {
+    z-index: 1001;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Ensure modal backdrop covers everything */
+.fixed.inset-0 {
+    z-index: 999;
+}
+
+/* Make sure modal content is visible */
+.bg-white.rounded.p-6.w-96.relative {
+    z-index: 1002;
+}
+</style>
 @endsection

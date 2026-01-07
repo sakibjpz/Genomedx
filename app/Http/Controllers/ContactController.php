@@ -33,50 +33,64 @@ class ContactController extends Controller
     /**
      * Store a new contact query.
      */
-    public function store(Request $request)
-    {
-        // Validation rules
-        $validated = $request->validate([
-            'query_type' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'nullable|string|max:20',
-            'company' => 'required|string|max:255',
-            'profile' => 'required|string|max:255',
-            'country' => 'required|string|max:255',
-            'message' => 'required|string|min:10',
-        ]);
+   /**
+ * Store a new contact query.
+ */
+public function store(Request $request)
+{
+    // Validation rules
+    $validated = $request->validate([
+        'query_type' => 'required|string|max:255',
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'phone' => 'nullable|string|max:20',
+        'company' => 'required|string|max:255',
+        'profile' => 'required|string|max:255',
+        'country' => 'required|string|max:255',
+        'message' => 'required|string|min:10',
+        'attachment' => 'nullable|file|max:10240',
+    ]);
 
-        // Save to database
-        $contactQuery = ContactQuery::create($validated);
-
-        // 1. Find the right team for this query type
-        $team = $this->findTeamForQuery($contactQuery->query_type);
+    // Handle file upload if present
+    if ($request->hasFile('attachment')) {
+        $file = $request->file('attachment');
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        $filePath = $file->storeAs('contact_attachments', $fileName, 'public');
         
-        if ($team) {
-            // 2. Create assignment
-            $assignment = QueryAssignment::create([
-                'contact_query_id' => $contactQuery->id,
-                'team_id' => $team->id,
-                'status' => 'pending',
-                'assigned_at' => now()
-            ]);
-
-            // 3. Send notification to team email
-            try {
-                Notification::route('mail', $team->email)
-                    ->notify(new NewContactQueryNotification($contactQuery));
-            } catch (\Exception $e) {
-                \Log::error('Failed to send notification: ' . $e->getMessage());
-            }
-
-            // 4. Update team performance metrics
-            UpdateTeamPerformanceMetrics::dispatch($team->id);
-        }
-
-        return back()->with('success', 'Your message has been sent successfully! We will contact you soon.');
+        // Add file path to validated data
+        $validated['attachment_path'] = $filePath;
+        $validated['attachment_name'] = $file->getClientOriginalName();
     }
 
+    // Save to database
+    $contactQuery = ContactQuery::create($validated);
+
+    // 1. Find the right team for this query type
+    $team = $this->findTeamForQuery($contactQuery->query_type);
+    
+    if ($team) {
+        // 2. Create assignment
+        $assignment = QueryAssignment::create([
+            'contact_query_id' => $contactQuery->id,
+            'team_id' => $team->id,
+            'status' => 'pending',
+            'assigned_at' => now()
+        ]);
+
+        // 3. Send notification to team email
+        try {
+            Notification::route('mail', $team->email)
+                ->notify(new NewContactQueryNotification($contactQuery));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send notification: ' . $e->getMessage());
+        }
+
+        // 4. Update team performance metrics
+        UpdateTeamPerformanceMetrics::dispatch($team->id);
+    }
+
+    return back()->with('success', 'Your message has been sent successfully! We will contact you soon.');
+}
     /**
      * Find the appropriate team for a query type
      */

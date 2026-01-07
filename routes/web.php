@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\QueryTypeController;
 use App\Http\Controllers\Admin\SocialLinkController;
+use App\Http\Controllers\Admin\TeamMemberController;
 use App\Http\Controllers\Admin\ContactQueryController;
 use App\Http\Controllers\Admin\ProductGroupController;
 use App\Http\Controllers\Admin\ProductDetailController;
@@ -119,6 +120,10 @@ Route::prefix('settings')->name('settings.')->group(function () {
     Route::get('/', [SettingController::class, 'index'])->name('index');
     Route::put('/', [SettingController::class, 'update'])->name('update');
 });
+
+// Team Members Management
+Route::resource('team-members', TeamMemberController::class);
+Route::post('team-members/reorder', [TeamMemberController::class, 'reorder'])->name('team-members.reorder');
 
 // News Routes
 Route::resource('news', NewsController::class)->except(['show']);

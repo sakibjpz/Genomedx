@@ -15,7 +15,9 @@ class ContactQuery extends Model
         'profile',
         'country',
         'message',
-        'status'
+        'status',
+        'attachment_path', 
+    'attachment_name'
     ];
 
     protected $appends = ['response_time', 'resolution_time'];

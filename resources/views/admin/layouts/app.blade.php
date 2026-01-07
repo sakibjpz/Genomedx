@@ -14,16 +14,42 @@
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Sidebar */
-        .admin-sidebar {
-            width: 250px;
-            background: #1f2937;
-            min-height: 100vh;
-            color: #fff;
-            position: sticky;
-            top: 0;
-            align-self: flex-start;
-        }
+       .admin-sidebar {
+    width: 250px;
+    background: #1f2937;
+    color: #fff;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    flex-shrink: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+/* Make sidebar navigation scrollable */
+.admin-sidebar nav {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+/* Scrollbar styling for sidebar */
+.admin-sidebar nav::-webkit-scrollbar {
+    width: 6px;
+}
+
+.admin-sidebar nav::-webkit-scrollbar-track {
+    background: #374151;
+}
+
+.admin-sidebar nav::-webkit-scrollbar-thumb {
+    background: #6b7280;
+    border-radius: 3px;
+}
+
+.admin-sidebar nav::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
         .admin-sidebar a {
             display: block;
             padding: 12px 20px;
@@ -67,10 +93,23 @@
             min-height: calc(100vh - 60px);
         }
 
-        /* Layout */
         .admin-layout {
-            display: flex;
-        }
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    width: 250px;
+    background: #1f2937;
+    min-height: 100vh;
+    color: #fff;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    flex-shrink: 0; /* ← Add this line */
+}
+
+/* Rest of your CSS stays the same */
 
         .logout-btn {
             background: #ef4444;
@@ -120,6 +159,51 @@
             color: white;
             background: #4b5563;
         }
+        /* Responsive table for contact queries */
+.admin-content .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* On smaller screens, reduce padding and font sizes */
+@media (max-width: 1200px) {
+    .admin-sidebar {
+        width: 200px; /* Reduce sidebar width */
+    }
+    
+    .admin-content {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 992px) {
+    .admin-sidebar {
+        width: 180px;
+    }
+    
+    /* Hide less important table columns */
+    .admin-content table td:nth-child(4),
+    .admin-content table th:nth-child(4),
+    .admin-content table td:nth-child(5),
+    .admin-content table th:nth-child(5) {
+        display: none;
+    }
+}
+
+/* Make table columns wrap text */
+.admin-content table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.admin-content table td,
+.admin-content table th {
+    word-wrap: break-word;
+    max-width: 150px;
+}
+
+
+
     </style>
 </head>
 <body>
@@ -184,6 +268,11 @@
         <a href="{{ route('admin.banners.index') }}" class="menu-item {{ request()->is('admin/banners*') ? 'active' : '' }}">
             <i class="fas fa-image"></i> Banners
         </a>
+
+        {{-- Team Members --}}
+<a href="{{ route('admin.team-members.index') }}" class="menu-item {{ request()->is('admin/team-members*') ? 'active' : '' }}">
+    <i class="fas fa-users"></i> Team Members
+</a>
 
         {{-- Products Section --}}
         <div class="mt-6 mb-2 px-4 text-sm text-gray-400 uppercase tracking-wider">

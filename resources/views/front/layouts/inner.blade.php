@@ -35,7 +35,7 @@
 <div class="flex items-center space-x-3">
     <div class="gp-logo">
         <a href="{{ url('/') }}">
-            <img src="{{ asset('images/logo.jpg') }}" alt="Genomedx logo" 
+            <img src="{{ asset('images/logo.png') }}" alt="Genomedx logo" 
                  style="width: auto; height: 50px; max-width: none !important;">
         </a>
     </div>
@@ -44,7 +44,7 @@
             {{-- Desktop: Icons & Links - Show on lg screens and above --}}
             <div class="hidden lg:flex items-center space-x-4 xl:space-x-6">
 
-                <a href="#" class="text-orange-500 font-medium header-small-text hidden xl:inline">e-Document finder</a>
+                {{-- <a href="#" class="text-orange-500 font-medium header-small-text hidden xl:inline">e-Document finder</a> --}}
 
                 {{-- Social Icons --}}
                 <div class="flex items-center space-x-3">
@@ -115,7 +115,7 @@
                                 x-cloak
                                 @mouseenter="open = true"
                                 @mouseleave="open = false"
-                                class="mega-dropdown absolute left-1/2 -translate-x-1/2 top-full mt-0 w-[900px] max-w-[95vw] bg-white border rounded-b-lg shadow-2xl z-50 overflow-hidden"
+                                class="mega-dropdown absolute left-1/2 -translate-x-1/2 top-full mt-0 w-[600px] max-w-[90vw] bg-white border rounded-b-lg shadow-2xl z-50 overflow-hidden"
                                 style="margin-top: 2px !important;">
                                 
                                 <div class="flex min-h-[400px]">
@@ -321,7 +321,7 @@
 
                 {{-- Mobile Actions --}}
                 <div class="pt-4 border-t space-y-4">
-                    <a href="#" class="block text-orange-500 font-medium py-2">e-Document finder</a>
+                    {{-- <a href="#" class="block text-orange-500 font-medium py-2">e-Document finder</a> --}}
                     
                     <div class="flex items-center space-x-4">
                         <a href="{{ route('login') }}" class="text-blue-600 font-medium">Login</a>

@@ -18,9 +18,9 @@
                     </ol>
                 </nav>
                 
-                <h1 class="text-display mb-2">Contact</h1>
+                {{-- <h1 class="text-display mb-2">Contact</h1> --}}
                 
-                <p class="text-lead max-w-3xl opacity-95">
+                <p class="text-display mb-2">
                     Write us, we will answer you as soon as possible.
                 </p>
             </div>
@@ -82,7 +82,7 @@
                             </div>
                         @endif
 
-                        <form action="{{ route('contact.store') }}" method="POST">
+                        <form action="{{ route('contact.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             
                             <!-- Hidden Company Field (Honeypot) -->
@@ -238,6 +238,22 @@
                                         <p class="error-message">{{ $message }}</p>
                                     @enderror
                                 </div>
+                                <!-- File Upload -->
+<div class="mb-8">
+    <label for="attachment" class="form-label">
+        Attach File (Optional)
+    </label>
+    <input type="file" id="attachment" name="attachment" 
+           class="form-control-file"
+           accept=".rex,.lc96u,.txt,.csv,.xls,.xlsx,.pdf,.doc,.docx">
+    <p class="form-hint mt-2">
+        Supported file types: PCR machine files (.rex, .lc96u), documents, spreadsheets, etc.
+        <br>Max file size: 10MB
+    </p>
+    @error('attachment')
+        <p class="error-message">{{ $message }}</p>
+    @enderror
+</div>
                             </div>
 
                             <!-- Privacy Policy Box -->
@@ -339,6 +355,58 @@
             </div>
         </div>
     </div>
+
+<!-- Export Team Section -->
+@php
+    $teamMembers = \App\Models\TeamMember::active()->get();
+@endphp
+
+@if($teamMembers->count() > 0)
+<div class="container mx-auto px-4 py-16">
+    <div class="max-w-7xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-12">
+            Our Export Team
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach($teamMembers as $member)
+                <div class="bg-gray-50 rounded-lg shadow-md p-6 text-center hover:shadow-lg transition-shadow">
+                    <div class="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-blue-100">
+                        @if($member->image)
+                            <img src="{{ asset('storage/' . $member->image) }}" 
+                                 alt="{{ $member->name }}" 
+                                 class="w-full h-full object-cover">
+                        @else
+                            <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                                <i class="fas fa-user text-gray-400 text-4xl"></i>
+                            </div>
+                        @endif
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-1">{{ $member->name }}</h3>
+                    <p class="text-blue-600 font-medium mb-3">{{ $member->position }}</p>
+                    <div class="text-sm text-gray-600 mb-4">
+                        <p class="font-medium">{{ $member->regions }}</p>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-gray-700 text-sm">
+                            <i class="fas fa-envelope mr-2 text-blue-500"></i>
+                            {{ $member->email }}
+                        </p>
+                        <p class="text-gray-700 text-sm">
+                            <i class="fas fa-phone mr-2 text-blue-500"></i>
+                            {{ $member->phone }}
+                        </p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+@endif
+
+
+
+
 </section>
 
 <!-- FontAwesome Icons -->

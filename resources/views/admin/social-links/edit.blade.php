@@ -1,6 +1,5 @@
 @extends('admin.layouts.app')
 
-
 @section('title', 'Edit Social Link')
 
 @section('content')
@@ -18,7 +17,7 @@
         </div>
     @endif
 
-    <form action="{{ route('social-links.update', $socialLink->id) }}" method="POST">
+    <form action="{{ route('admin.social-links.update', $socialLink->id) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -29,12 +28,24 @@
         </div>
 
         <div class="mb-4">
+            <label for="platform" class="block font-semibold mb-1">Platform</label>
+            <select name="platform" id="platform" class="w-full border p-2 rounded" required>
+                <option value="">-- Select Platform --</option>
+                <option value="Facebook" {{ old('platform', $socialLink->platform) == 'Facebook' ? 'selected' : '' }}>Facebook</option>
+                <option value="Twitter" {{ old('platform', $socialLink->platform) == 'Twitter' ? 'selected' : '' }}>Twitter</option>
+                <option value="LinkedIn" {{ old('platform', $socialLink->platform) == 'LinkedIn' ? 'selected' : '' }}>LinkedIn</option>
+                <option value="YouTube" {{ old('platform', $socialLink->platform) == 'YouTube' ? 'selected' : '' }}>YouTube</option>
+                <option value="Instagram" {{ old('platform', $socialLink->platform) == 'Instagram' ? 'selected' : '' }}>Instagram</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
             <label for="url" class="block font-semibold mb-1">URL</label>
             <input type="url" name="url" id="url" class="w-full border p-2 rounded" value="{{ old('url', $socialLink->url) }}" required>
         </div>
 
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Update</button>
-        <a href="{{ route('social-links.index') }}" class="ml-2 px-4 py-2 rounded border">Cancel</a>
+        <a href="{{ route('admin.social-links.index') }}" class="ml-2 px-4 py-2 rounded border">Cancel</a>
     </form>
 
 </div>
