@@ -93,6 +93,13 @@
         {{-- Desktop Navigation Row - Show on lg screens and above --}}
         <div class="hidden lg:block w-full bg-white shadow py-3 relative z-40">
             <nav class="flex flex-nowrap justify-center gap-6 xl:gap-8 text-blue-700 font-semibold text-base xl:text-lg overflow-x-auto px-4">
+                {{-- ADD THIS: Home Menu --}}
+        <div class="relative">
+            <a href="{{ url('/') }}" 
+               class="hover:text-blue-900 whitespace-nowrap py-2 block">
+               Home
+            </a>
+        </div>
                 @foreach($menus->where('parent_id', null)->sortBy('order') as $menu)
                     @if($menu->name === 'Products')
                         {{-- PRODUCTS MEGA MENU WITH COMPANIES --}}
@@ -265,6 +272,11 @@
 
                 {{-- Navigation Links --}}
                 <nav class="space-y-4">
+                     {{-- ADD THIS: Home Menu for Mobile --}}
+            <a href="{{ url('/') }}" 
+               class="block text-blue-700 font-semibold text-lg py-2">
+               Home
+            </a>
                     @foreach($menus->where('parent_id', null)->sortBy('order') as $menu)
                         
                         @if($menu->name === 'Products')
