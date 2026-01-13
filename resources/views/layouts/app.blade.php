@@ -6,6 +6,18 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
+        
+<meta name="description" content="@yield('meta_description', 'Genomedx offers advanced genetic testing, molecular diagnostics, and healthcare services in Bangladesh. Get accurate lab results and expert medical guidance online.')">
+
+<meta name="keywords" content="Genomedx, genetic testing Bangladesh, molecular diagnostics, health checkup, lab services Bangladesh, DNA testing, medical diagnostics, genomic testing, healthcare services, genetic counseling, lab testing online, clinical tests Bangladesh, patient diagnostics, medical lab services">
+
+<meta name="author" content="Genomedx">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

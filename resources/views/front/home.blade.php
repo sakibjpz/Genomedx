@@ -1,6 +1,8 @@
 @extends('front.layouts.app')
 
-@section('title', 'Home')
+@section('title', 'Genomedx | Genetic Testing & Healthcare Services in Bangladesh')
+@section('meta_description', 'Genomedx provides advanced genetic testing, molecular diagnostics, and healthcare services in Bangladesh. Get accurate lab results, DNA testing, and expert medical guidance online.')
+
 
 @section('content')
 
