@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <title>@yield('title', 'Genenomedx')</title>
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     @vite(['resources/css/custom.css', 'resources/css/app.css', 'resources/js/app.js'])
@@ -160,13 +161,13 @@ class="relative header-small-text">
                                 x-cloak
                                 @mouseenter="open = true"
                                 @mouseleave="open = false"
-                                class="mega-dropdown absolute left-1/2 -translate-x-1/2 top-full mt-0 w-[600px] max-w-[90vw] bg-white border rounded-b-lg shadow-2xl z-50 overflow-hidden"
+                                class="mega-dropdown absolute left-1/2 -translate-x-1/2 top-full mt-0 w-[800px] max-w-[90vw] bg-white border rounded-b-lg shadow-2xl z-50 overflow-hidden"
                                 style="margin-top: 2px !important;">
                                 
                                 <div class="flex min-h-[400px]">
                                     
                                     {{-- Left Column: Companies List --}}
-                                    <div class="w-1/3 border-r bg-gray-50 p-6 overflow-y-auto" style="max-height: 70vh;">
+                                    <div class="w-[40%] border-r bg-gray-50 p-6 overflow-y-auto" style="max-height: 70vh;">
                                         <h3 class="text-xl font-bold text-gray-800 mb-6">Select Company</h3>
                                         
                                         <div class="space-y-2">
@@ -180,12 +181,26 @@ class="relative header-small-text">
                                                     }"
                                                     class="w-full text-left p-4 rounded-lg transition-all duration-200 flex items-center justify-between">
                                                     
-                                                    <div>
-                                                        <div class="font-semibold">{{ $company->name }}</div>
-                                                        <div class="text-sm text-gray-600 mt-1">
-                                                            {{ $company->active_product_groups_count }} product groups
-                                                        </div>
-                                                    </div>
+                                                  <div class="flex items-center gap-3">
+    {{-- Company Logo --}}
+    <img
+        src="{{ $company->image
+            ? asset('storage/' . $company->image)
+            : asset('assets/images/company-placeholder.png') }}"
+        alt="{{ $company->name }}"
+        class="w-10 h-10 flex-shrink-0 object-contain rounded bg-white transition-transform duration-200 group-hover:scale-105"
+    >
+
+    {{-- Company Info --}}
+    <div class="flex-1">
+        <div class="font-semibold text-gray-800">
+            {{ $company->name }}
+        </div>
+        <div class="text-sm text-gray-600 mt-1">
+            {{ $company->active_product_groups_count }} product groups
+        </div>
+    </div>
+</div>
                                                     
                                                     <i class="fas fa-chevron-right text-sm"></i>
                                                 </button>
@@ -317,30 +332,86 @@ class="relative header-small-text">
             </a>
                     @foreach($menus->where('parent_id', null)->sortBy('order') as $menu)
                         
-                        @if($menu->name === 'Products')
-                            @php
-                                $productGroups = \App\Models\ProductGroup::withCount('products')
-                                    ->orderBy('position')
-                                    ->get();
-                            @endphp
-                            
-                            <div x-data="{ productsOpen: false }">
-                                <button @click="productsOpen = !productsOpen" 
-                                        class="w-full flex items-center justify-between text-blue-700 font-semibold text-lg py-2">
-                                    Products
-                                    <i class="fas fa-chevron-down transition-transform" :class="productsOpen && 'rotate-180'"></i>
-                                </button>
-                                
-                                <div x-show="productsOpen" x-collapse class="pl-4 mt-2 space-y-2">
-                                    @foreach($productGroups as $group)
+                       @if($menu->name === 'Products')
+    <div x-data="{ productsOpen: false }">
+        <button @click="productsOpen = !productsOpen" 
+                class="w-full flex items-center justify-between text-blue-700 font-semibold text-lg py-2">
+            Products
+            <i class="fas fa-chevron-down transition-transform" :class="productsOpen && 'rotate-180'"></i>
+        </button>
+        
+        <div x-show="productsOpen" x-collapse class="mt-2 space-y-4">
+            {{-- Companies List for Mobile --}}
+            @foreach($companies as $company)
+                <div x-data="{ companyOpen: false }" class="border rounded-lg overflow-hidden">
+                    {{-- Company Header with Logo --}}
+                    <button @click="companyOpen = !companyOpen" 
+                            class="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100">
+                        <div class="flex items-center gap-3">
+                            {{-- Company Logo --}}
+                            <img
+                                src="{{ $company->image
+                                    ? asset('storage/' . $company->image)
+                                    : asset('assets/images/company-placeholder.png') }}"
+                                alt="{{ $company->name }}"
+                                class="w-10 h-10 object-contain rounded bg-white"
+                            >
+                            {{-- Company Name --}}
+                            <div class="text-left">
+                                <div class="font-semibold text-gray-800">
+                                    {{ $company->name }}
+                                </div>
+                                <div class="text-sm text-gray-600">
+                                    {{ $company->active_product_groups_count }} product groups
+                                </div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-down transition-transform" :class="companyOpen && 'rotate-180'"></i>
+                    </button>
+                    
+                    {{-- Company's Product Groups --}}
+                    <div x-show="companyOpen" x-collapse class="bg-white border-t">
+                        <div class="p-4">
+                            @if($company->activeProductGroups->count() > 0)
+                                <div class="space-y-3">
+                                    @foreach($company->activeProductGroups as $group)
                                         <a href="{{ route('products.index', $group->slug) }}"
-                                           class="block py-2 text-gray-700 hover:text-blue-600">
-                                            {{ $group->name }}
+                                           class="flex items-center justify-between py-3 px-2 hover:bg-blue-50 rounded-lg group">
+                                            <div class="flex-grow">
+                                                <div class="font-medium text-gray-800 group-hover:text-blue-600">
+                                                    {{ $group->name }}
+                                                </div>
+                                                <div class="text-sm text-gray-600 mt-1">
+                                                    {{ $group->products_count }} products
+                                                </div>
+                                            </div>
+                                            @if($group->image || $group->icon || $group->image_path)
+                                                @php
+                                                    $path = $group->image ?? $group->icon ?? $group->image_path;
+                                                    $isAsset = str_contains($path, 'assets/');
+                                                @endphp
+                                                <div class="w-10 h-10 flex-shrink-0 ml-3">
+                                                    <img src="{{ $isAsset ? asset($path) : asset('storage/' . $path) }}" 
+                                                         alt="{{ $group->name }}"
+                                                         class="w-full h-full object-contain">
+                                                </div>
+                                            @endif
                                         </a>
                                     @endforeach
                                 </div>
-                            </div>
-                        @else
+                            @else
+                                <div class="text-center py-4 text-gray-500">
+                                    <div class="text-3xl mb-2">📦</div>
+                                    <div>No product groups available</div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+@else
                             <div x-data="{ submenuOpen: false }">
                                 @if($menu->children->count() > 0)
                                     <button @click="submenuOpen = !submenuOpen" 
@@ -373,11 +444,11 @@ class="relative header-small-text">
                 <div class="pt-4 border-t space-y-4">
                     {{-- <a href="#" class="block text-orange-500 font-medium py-2">e-Document finder</a> --}}
                     
-                    <div class="flex items-center space-x-4">
+                    {{-- <div class="flex items-center space-x-4">
                         <a href="{{ route('login') }}" class="text-blue-600 font-medium">Login</a>
                         <span class="text-gray-500">/</span>
                         <a href="{{ route('register') }}" class="text-blue-600 font-medium">Register</a>
-                    </div>
+                    </div> --}}
 
                     {{-- Social Icons Mobile --}}
                     <div class="flex items-center space-x-3">
@@ -391,14 +462,14 @@ class="relative header-small-text">
                     </div>
 
                     {{-- Flags Mobile --}}
-                    <div class="flex items-center space-x-2">
+                    {{-- <div class="flex items-center space-x-2">
                         @foreach($flags as $index => $flag)
                             <img src="{{ asset('storage/flags/'.$flag->image) }}" class="w-8">
                             @if($index < count($flags) - 1)
                                 <span>/</span>
                             @endif
                         @endforeach
-                    </div>
+                    </div> --}}
                 </div>
 
             </div>

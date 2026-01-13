@@ -35,7 +35,7 @@ class CompanyController extends Controller
             'slug' => 'required|string|max:255|unique:companies',
             'is_active' => 'boolean',
             'sort_order' => 'integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // Added
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048' 
         ]);
 
         $data = [
@@ -74,7 +74,7 @@ class CompanyController extends Controller
             'slug' => 'required|string|max:255|unique:companies,slug,' . $company->id,
             'is_active' => 'boolean',
             'sort_order' => 'integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // Added
+      'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         $data = [
